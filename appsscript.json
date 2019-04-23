@@ -1,0 +1,37 @@
+{
+  "timeZone": "Europe/Paris",
+  "dependencies": {
+    "enabledAdvancedServices": [
+      {
+        "userSymbol": "Drive",
+        "serviceId": "drive",
+        "version": "v2"
+      },
+      {
+        "userSymbol": "AdminDirectory",
+        "serviceId": "admin",
+        "version": "directory_v1"
+      },
+      {
+        "userSymbol": "Gmail",
+        "serviceId": "gmail",
+        "version": "v1"
+      },
+      {
+        "userSymbol": "Sheets",
+        "serviceId": "sheets",
+        "version": "v4"
+      }
+    ]
+  },
+  "executionApi": {
+    "access": "ANYONE"
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/admin.directory.group",
+    "https://www.googleapis.com/auth/admin.directory.user",
+    "https://www.googleapis.com/auth/drive",
+    "https://www.googleapis.com/auth/script.send_mail"
+  ]
+}

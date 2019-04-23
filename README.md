@@ -1,4 +1,4 @@
-## GSuite-integrations
+# G-Suite
 
 För att kunna hantera accesser och ägandeskap av filer så valde Fysiksektionen under våren 2019 att gå över till G-Suite. Då behöver vi kunna hantera våra medlemmar på ett vettigt sätt, så att det funkar bra. Målet var att ha ett system som
 - Centralt administrerar vilka konton som finns
@@ -35,4 +35,3 @@ Se till att inte råka committa creds.json eller andra hemliga filer.
 - Nämndkalendrar
 - Funktionärsmailen flyttar in
 - Samkör medlemsregistret med THS:s?
-# G-Suite
