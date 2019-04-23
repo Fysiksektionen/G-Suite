@@ -12,10 +12,13 @@ function synkarKonton() {
   var accounts = getGoogleAccounts();
   var memberObject = getListedInSheet();
   var memberList = [];
-  
+
   var saknas = []; // De som är i bladet, men inte har konto. listan skapas av debug-skäl
+
   var skaBort = [] // De som har konto, men inte är i bladet
+
   for (var i = 0; i < memberObject.email.length; i++) {
+
     //Logger.log('Nu undersöks ' + memberObject.email[i]);
     if (!memberObject.phone[i]) {memberObject.phone[i] = ''};
     var member = {
@@ -26,18 +29,24 @@ function synkarKonton() {
       phone: memberObject.phone[i]
       };
       //Logger.log(member)
+
     if(!containsMember(accounts, memberObject.email[i])) { // Om användaren inte finns än, men ska skapas
+
       saknas.push(memberObject.email[i]);
       //Logger.log(member)
       createAccount(member)
       //Logger.log('Bör lägga till ' + memberObject.email[i]);
     }
-    else {updateUser(member);}
+
+    else {
+      updateUser(member);
+    }
+
   }
   //Logger.log('Har testat alla som finns i sheets');
-  
+
   for (var i = 0; i < accounts.length; i++) {
-    if(!containsMember(memberObject.email, accounts[i])) { 
+    if(!containsMember(memberObject.email, accounts[i])) {
       // Alla som finns i organisationen men inte i bladet skall suspenderas.
       skaBort.push(accounts[i]);
       suspendUser(accounts[i])
@@ -52,7 +61,7 @@ function containsMember(list, memberemail) {
   //Logger.log('Har fått in ' + memberemail);
   for (var j = 0; j < list.length; j++) {
     //Logger.log(list[j] + 'Jämförs med');
-    
+
     if (list[j] === memberemail) {
       //Logger.log('Finns i båda: ' + memberemail);
       return true
@@ -80,7 +89,7 @@ function getGoogleAccounts() {
       for (var i = 0; i < users.length; i++) {
         var user = users[i];
         emails.push(user.primaryEmail);
-        //Logger.log('%s (%s)', user.name.fullName, user.primaryEmail);                
+        //Logger.log('%s (%s)', user.name.fullName, user.primaryEmail);
       }
       //Logger.log(emails);
       return emails
@@ -91,12 +100,12 @@ function getGoogleAccounts() {
     }
     pageToken = page.nextPageToken;
   } while (pageToken);
-  
+
   return users;
 }
 
 // Returnerar en lista med användare specade i sheet
-// Tyvärr returnerar den en dict med listor, istället för en lista med dict. 
+// Tyvärr returnerar den en dict med listor, istället för en lista med dict.
 // Detta eftersom den inte klarade av att returnera en lista med dict. Gör saker krångliga i compareLists()
 function getListedInSheet() {
   var spreadsheetId = '1EsPbU7hCHUxtziBXrYAoih1lcfYZK9AT4JUpVyMCAJU';
@@ -149,9 +158,9 @@ function createAccount(member) {
     Logger.log('Användare %s skapad.', user.primaryEmail);
   }
   catch (e) {
-    Logger.log("Kunde inte lägga till användare: " + member.id); 
+    Logger.log("Kunde inte lägga till användare: " + member.id);
   }
-   
+
 }
 
 function suspendUser(email) {
@@ -164,23 +173,25 @@ function suspendUser(email) {
 
 // Avsuspendenderar för tillfället enbart TODO uppdatera användarens uppgifter om nåt ändrats
 function updateUser(member) {
-  user = createUserPrompt(member)
+  // user = createUserPrompt(member)
+  // var user = {
+  //   primaryEmail: member.email
+  // }
   var update = {
     suspended: false,
   }
+
   //Logger.log('Uppdaterar ' + member.email)
-  AdminDirectory.Users.update(user, member.email);
+  AdminDirectory.Users.update(update, member.email);
 }
 
 function createUserPrompt(member) {
   var first_name = member.first_name;
-  
+
   var last_name = member.last_name;
-  
-  var email = member.email; 
-  
+
   var user = {
-    primaryEmail: email,
+    primaryEmail: member.email,
     name: {
       givenName: first_name,
       familyName: last_name
@@ -188,7 +199,7 @@ function createUserPrompt(member) {
     "externalIds": [
       {
         "value": member.id,
-        "type": "organization"      
+        "type": "organization"
       }
     ],
     "orgUnitPath": '/Teknologer',

@@ -14,16 +14,22 @@ Detta uppnås genom ett system som består av
 - Team Drives där alla våra filer ligger, ordnade efter accessbehov
 - Ett SSO-system för inloggning (work in progress)
 
-Första uppsättningen kod är skriven av Teo Elmfeldt, FUL 2019. Inpirerad av och till stor del kopierad från https://github.com/scouternasetjanster/Google-Scoutnet-synk
+Första uppsättningen kod är skriven av Teo Elmfeldt, FUL 2019. Inpirerad av  https://github.com/scouternasetjanster/Google-Scoutnet-synk
+
+
+## Manuell körning
+Använd webbgränsnittet för att köra runAll() eller använd clasp (efter setup https://github.com/google/clasp/blob/master/docs/run.md)
+clasp push
+clasp run 'runAll'
 
 
 ## Setup
-Koden exekveras genom Google Script, där funktionen runAll() i filen toRun.gs körs några gånger om dagen. Detta av kontot admin.styret@fysiksektionen.se. Allt annat ska skapas av användarspecifika konton, men vi gör ett undantag för saker som ska kunna köras utan att någon lägger sig i.
+Koden exekveras genom Google Script, där funktionen runAll() i filen toRun.gs körs några gånger (2) om dagen. Detta av kontot admin.styret@fysiksektionen.se. Allt annat ska skapas av användarspecifika konton, men vi gör ett undantag för saker som ska kunna köras utan att någon lägger sig i.
 
 
 Workflow:
 git clone från repot
-Använd clasp (https://github.com/google/clasp) eller webbgränssnittet för att synca filerna
+Använd clasp (https://github.com/google/clasp) eller webbgränssnittet för att synka filerna
 
 ### Clasp setup
 När du tröttnat på webbgränssnittet så kan du gå över till terminalverktyget clasp. Men du behöver inte!
