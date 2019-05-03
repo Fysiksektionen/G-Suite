@@ -104,6 +104,7 @@ function addAndRemoveUsers(listOfUsers) {
 
       }
     }
+    return
     //Logger.log(listOfGroupIds)
     for (var i = 0; i < listOfGroupIds.length; i ++) {
 
