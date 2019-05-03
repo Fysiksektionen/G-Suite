@@ -9,34 +9,34 @@
 function synkarGrupper() {
   var rootSheet = '1EsPbU7hCHUxtziBXrYAoih1lcfYZK9AT4JUpVyMCAJU'
   var defaultRange = 'A2:D'
-  // Sheets.Spreadsheets.Values.clear({}, rootSheet, 'Alla!A2:C')
+  Sheets.Spreadsheets.Values.clear({}, rootSheet, 'Alla!A2:C')
   // Lägg till respektive nämnd, och sheet-id till dess medlemslista
 
-  // var styretId = rootSheet;
-  // var StyretRange = 'Styret!A2:D';
-  // getListFromNamnd(styretId, 'styret', StyretRange);
-  //
-  // var PermanentTitlesId = rootSheet;
-  // var PermanentTitlesRange = 'Grupper!A2:D';
-  // getListFromNamnd(PermanentTitlesId, '', PermanentTitlesRange);
-  //
-  // var fsnId = '1I9_ngSMWz-wBTXmaavlTGIVsugFjzMiF0TqRDidyUfY';
-  // getListFromNamnd(fsnId, 'fsn', defaultRange);
-  //
-  // var fcomId = '1042kWvX-JBkBDKjo0LPWVWmleoW_IjBRrMZS6MIHsDE';
-  // getListFromNamnd(fcomId, 'fcom', defaultRange);
-  //
-  // var frumId = '1Rrdmob6-96OECcy3YSJtl9cd-jx8eCfcKqVf0oPWc4w';
-  // getListFromNamnd(frumId, 'frum', defaultRange);
-  //
-  // var mottagningenId = '13-81WGYZ1GmfZjqLsf6aLSjEhr3joFseqZjL7c9bgWU';
-  // getListFromNamnd(mottagningenId, 'mottagningen', defaultRange);
-  //
-  // var fnId = '194ctESEJRfE5uYAcS_fVelr3oUdzSdOT9NDvsfkmF-E';
-  // getListFromNamnd(fnId, 'fn', defaultRange);
-  //
-  // var fkmId = '11NsStSYkgj4Xb8joQNRbDWaOa6uS-Lng4KwpyoaUs_g';
-  // getListFromNamnd(fkmId, 'fkm', defaultRange);
+  var styretId = rootSheet;
+  var StyretRange = 'Styret!A2:D';
+  getListFromNamnd(styretId, 'styret', StyretRange);
+
+  var PermanentTitlesId = rootSheet;
+  var PermanentTitlesRange = 'Grupper!A2:D';
+  getListFromNamnd(PermanentTitlesId, '', PermanentTitlesRange);
+
+  var fsnId = '1I9_ngSMWz-wBTXmaavlTGIVsugFjzMiF0TqRDidyUfY';
+  getListFromNamnd(fsnId, 'fsn', defaultRange);
+
+  var fcomId = '1042kWvX-JBkBDKjo0LPWVWmleoW_IjBRrMZS6MIHsDE';
+  getListFromNamnd(fcomId, 'fcom', defaultRange);
+
+  var frumId = '1Rrdmob6-96OECcy3YSJtl9cd-jx8eCfcKqVf0oPWc4w';
+  getListFromNamnd(frumId, 'frum', defaultRange);
+
+  var mottagningenId = '13-81WGYZ1GmfZjqLsf6aLSjEhr3joFseqZjL7c9bgWU';
+  getListFromNamnd(mottagningenId, 'mottagningen', defaultRange);
+
+  var fnId = '194ctESEJRfE5uYAcS_fVelr3oUdzSdOT9NDvsfkmF-E';
+  getListFromNamnd(fnId, 'fn', defaultRange);
+
+  var fkmId = '11NsStSYkgj4Xb8joQNRbDWaOa6uS-Lng4KwpyoaUs_g';
+  getListFromNamnd(fkmId, 'fkm', defaultRange);
 
   // Nu är alla medlemmar lagda på samma ställe, då är det fritt fram att hämta och synka
   var listOfUsers = Sheets.Spreadsheets.Values.get(rootSheet, 'Alla!A2:B').values
@@ -80,7 +80,7 @@ function getListFromNamnd(sheetId, namnd, rangeid) {
         if (listOfIds[i] == members[j][3]) {
 
           toWriteList.push([getEmail(members[j][1], namnd, true), getEmail(listOfIds[i], namnd, true)])
-          // writeToSheet(getEmail(members[j][1], namnd, true), getEmail(listOfIds[i], namnd, true));
+
 
         }
       }
@@ -104,7 +104,7 @@ function addAndRemoveUsers(listOfUsers) {
 
       }
     }
-    return
+
     //Logger.log(listOfGroupIds)
     for (var i = 0; i < listOfGroupIds.length; i ++) {
 
@@ -130,6 +130,7 @@ function addAndRemoveUsers(listOfUsers) {
 
         var toRemovePerId = []
         // gå igenom alla som är med i gruppen. Ska de fortfarande vara det?
+
         for (var j = 0; j < listOfEmails.length; j++) {
 
           // grupper kan ha flera olika namn, så vi tar rätt på alla alias
@@ -220,7 +221,6 @@ function CreateOrUpdateGroup(name, id, namnd) {
 
 
 //FIXME: Det måste ju finnas nåt smidigare sätt...
-
 // exists är true om vi förväntar oss att en grupp som heter så redan finns.
 // då betyder avsaknad av id:t att det är en användare som inte existerar än
 function getEmail(id, namnd, exists) {
@@ -339,26 +339,7 @@ function contains(list, element) {
 }
 
 // skriver in från alla nämnder, till ett samlat ställe
-// tar in medlemsid och gruppid på emailformat
-function writeToSheet(medlemsid, gruppid, gruppNamn) {
-  var values = [
-    [
-      medlemsid, gruppid, gruppNamn
-    ]
-  ];
-  var valueRange = Sheets.newRowData();
-  valueRange.values = values;
-
-  var appendRequest = Sheets.newAppendCellsRequest();
-  appendRequest.sheetId = '1g0-sYcS_QTmQ_FIuo8r02Gu_YiKQv7SB0sZzwJR2y00';
-  appendRequest.rows = [valueRange];
-
-  var result = Sheets.Spreadsheets.Values.append(valueRange, '1EsPbU7hCHUxtziBXrYAoih1lcfYZK9AT4JUpVyMCAJU', 'Alla!A2:C', {
-    valueInputOption: 'RAW',
-    insertDataOption: 'INSERT_ROWS'
-  });
-}
-
+// tar in en lista med en lista med medlemsid och gruppid på emailformat
 function writeAllToSheet(listToWrite) {
 
   var valueRange = Sheets.newRowData();
