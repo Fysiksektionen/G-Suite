@@ -1,7 +1,7 @@
 // Mycket kod plankad från https://github.com/scouternasetjanster/Google-Scoutnet-synk
 // Skriven av Teo Elmfeldt, FUL 2019.
 
-//TODO: Ta fram en lista på de som inte listas någonstans att de ska finnas 
+//TODO: Ta fram en lista på de som inte listas någonstans att de ska finnas
 //      med, men ändå är med, och ta bort dem
 //TODO: ta bort grupper som är tomma?
 //TODO: Skriv på ett kalkylark en överblick över alla medlemsskap
@@ -11,33 +11,33 @@ function synkarGrupper() {
   var defaultRange = 'A2:D'
   Sheets.Spreadsheets.Values.clear({}, rootSheet, 'Alla!A2:C')
   // Lägg till respektive nämnd, och sheet-id till dess medlemslista
-  
+
   var styretId = rootSheet;
   var StyretRange = 'Styret!A2:D';
   getListFromNamnd(styretId, 'styret', StyretRange);
-  
+
   var PermanentTitlesId = rootSheet;
   var PermanentTitlesRange = 'Grupper!A2:D';
   getListFromNamnd(PermanentTitlesId, '', PermanentTitlesRange);
-  
+
   var fsnId = '1I9_ngSMWz-wBTXmaavlTGIVsugFjzMiF0TqRDidyUfY';
   getListFromNamnd(fsnId, 'fsn', defaultRange);
-  
+
   var fcomId = '1042kWvX-JBkBDKjo0LPWVWmleoW_IjBRrMZS6MIHsDE';
   getListFromNamnd(fcomId, 'fcom', defaultRange);
-  
+
   var frumId = '1Rrdmob6-96OECcy3YSJtl9cd-jx8eCfcKqVf0oPWc4w';
   getListFromNamnd(frumId, 'frum', defaultRange);
-  
+
   var mottagningenId = '13-81WGYZ1GmfZjqLsf6aLSjEhr3joFseqZjL7c9bgWU';
   getListFromNamnd(mottagningenId, 'mottagningen', defaultRange);
-  
+
   var fnId = '194ctESEJRfE5uYAcS_fVelr3oUdzSdOT9NDvsfkmF-E';
   getListFromNamnd(fnId, 'fn', defaultRange);
-  
+
   var fkmId = '11NsStSYkgj4Xb8joQNRbDWaOa6uS-Lng4KwpyoaUs_g';
   getListFromNamnd(fkmId, 'fkm', defaultRange);
-      
+
   // Nu är alla medlemmar lagda på samma ställe, då är det fritt fram att hämta och synka
   var listOfUsers = Sheets.Spreadsheets.Values.get(rootSheet, 'Alla!A2:B').values
   addAndRemoveUsers(listOfUsers)
@@ -49,23 +49,28 @@ function getListFromNamnd(sheetId, namnd, rangeid) {
     Logger.log('No data found.');
   }
   else {
-    
+
     var listOfTitles = []; // vad grupperna kallas
     var listOfIds = [] // vad grupperna har unikt id
     for (var row = 0; row < members.length; row++) {
       //Logger.log(members[row][3])
-      if (!contains(listOfIds, members[row][3])) { // Om gruppens existens inte är noterad än
+
+
+      // Om gruppens existens inte är noterad än
+      if (!contains(listOfIds, members[row][3])) {
+
         listOfIds.push(members[row][3]);
+
         listOfTitles.push(members[row][2]);
-        
+
         // skapar alla grupper som saknas, uppdaterar övriga
-        CreateOrUpdateGroup(members[row][2], members[row][3], namnd) 
+        CreateOrUpdateGroup(members[row][2], members[row][3], namnd)
       }
     }
 
-    
+    var toWriteList = []
     // Lägg till de som ska in i grupper till totala listan
-    
+
     for (var i = 0; i < listOfIds.length; i ++) {
       //Logger.log(listOfIds[i])
       // undersöker respektive grupp, kollar mot vilka som ska med
@@ -73,11 +78,13 @@ function getListFromNamnd(sheetId, namnd, rangeid) {
 
       for (var j = 0; j < members.length; j++) {
         if (listOfIds[i] == members[j][3]) {
-          
-          writeToSheet(getEmail(members[j][1], namnd, true), getEmail(listOfIds[i], namnd, true));
-          
+
+          toWriteList.append([getEmail(members[j][1], namnd, true), getEmail(listOfIds[i], namnd, true)])
+          // writeToSheet(getEmail(members[j][1], namnd, true), getEmail(listOfIds[i], namnd, true));
+
         }
-      }   
+      }
+      writeAllToSheet(toWriteList)
     }
   }
 }
@@ -94,20 +101,20 @@ function addAndRemoveUsers(listOfUsers) {
       //Logger.log(members[row][3])
       if (!contains(listOfGroupIds, listOfUsers[row][1])) { // Om gruppens existens inte är noterad än
         listOfGroupIds.push(listOfUsers[row][1]);
-        
+
       }
     }
     //Logger.log(listOfGroupIds)
     for (var i = 0; i < listOfGroupIds.length; i ++) {
-      
+
       // ta rätt på alla som redan är med i gruppen
       var listOfEmails = memberEmails(listOfGroupIds[i]);
       //Logger.log(listOfGroupIds + ' : ' + listOfEmails)
-      
+
       var listOfWantedMembers = []
       //var listToRemove = []
       for (var j = 0; j < listOfUsers.length; j++) {
-        
+
         //lägger till alla som enligt listorna ska vara med i gruppen
         if (listOfGroupIds[i] == listOfUsers[j][1]) {
 
@@ -119,7 +126,7 @@ function addAndRemoveUsers(listOfUsers) {
       //Logger.log(listOfEmails + ' jämförs med ' + listOfWantedMembers)
       if (listOfEmails) {
         //Logger.log(listOfGroupIds[i])
-        
+
         var toRemovePerId = []
         // gå igenom alla som är med i gruppen. Ska de fortfarande vara det?
         for (var j = 0; j < listOfEmails.length; j++) {
@@ -145,7 +152,7 @@ function addAndRemoveUsers(listOfUsers) {
             //Logger.log('vi checkar ' + oneMember[alias] + ' mot ' + listOfWantedMembers)
             if (contains(listOfWantedMembers, oneMember[alias])) {
               //Logger.log(listOfEmails[j] + ' borde bort från ' + listOfIds[i])
-              
+
               isMember = true;
             }
           }
@@ -285,10 +292,10 @@ function addToGroup(groupEmail, memberemail) {
     try {
       // om det är en grupp försöker vi lägga till den i gruppen
       AdminDirectory.Members.insert(member, groupEmail);
-      
+
     }
     catch (e) {
-      
+
       try {
         // om det är en grupp som redan finns med i gruppen kommer detta lyckas
         AdminDirectory.Members.get(groupEmail, memberemail);
@@ -314,9 +321,9 @@ function missingUser(memberId) {
   /*
   var email = Session.getActiveUser().getEmail();
   MailApp.sendEmail(email, "Användare saknas",
-                   "Vi saknar användaren " + memberId);   
+                   "Vi saknar användaren " + memberId);
                    */
-  
+
 }
 
 // om list innehåller element
@@ -340,6 +347,21 @@ function writeToSheet(medlemsid, gruppid, gruppNamn) {
   ];
   var valueRange = Sheets.newRowData();
   valueRange.values = values;
+
+  var appendRequest = Sheets.newAppendCellsRequest();
+  appendRequest.sheetId = '1g0-sYcS_QTmQ_FIuo8r02Gu_YiKQv7SB0sZzwJR2y00';
+  appendRequest.rows = [valueRange];
+
+  var result = Sheets.Spreadsheets.Values.append(valueRange, '1EsPbU7hCHUxtziBXrYAoih1lcfYZK9AT4JUpVyMCAJU', 'Alla!A2:C', {
+    valueInputOption: 'RAW',
+    insertDataOption: 'INSERT_ROWS'
+  });
+}
+
+function writeAllToSheet(listToWrite, gruppNamn) {
+
+  var valueRange = Sheets.newRowData();
+  valueRange.values = listToWrite;
 
   var appendRequest = Sheets.newAppendCellsRequest();
   appendRequest.sheetId = '1g0-sYcS_QTmQ_FIuo8r02Gu_YiKQv7SB0sZzwJR2y00';

@@ -20,6 +20,8 @@ Första uppsättningen kod är skriven av Teo Elmfeldt, FUL 2019. Inpirerad av  
 ## Manuell körning
 Använd webbgränsnittet för att köra runAll() eller använd clasp (efter setup https://github.com/google/clasp/blob/master/docs/run.md)
 clasp push
+git commit -am "commit message"
+
 clasp run 'runAll'
 
 
