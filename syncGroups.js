@@ -12,31 +12,31 @@ function synkarGrupper() {
   Sheets.Spreadsheets.Values.clear({}, rootSheet, 'Alla!A2:C')
   // Lägg till respektive nämnd, och sheet-id till dess medlemslista
 
-  // var styretId = rootSheet;
-  // var StyretRange = 'Styret!A2:D';
-  // getListFromNamnd(styretId, 'styret', StyretRange);
-  //
-  // var PermanentTitlesId = rootSheet;
-  // var PermanentTitlesRange = 'Grupper!A2:D';
-  // getListFromNamnd(PermanentTitlesId, '', PermanentTitlesRange);
+  var styretId = rootSheet;
+  var StyretRange = 'Styret!A2:D';
+  getListFromNamnd(styretId, 'styret', StyretRange);
+
+  var PermanentTitlesId = rootSheet;
+  var PermanentTitlesRange = 'Grupper!A2:D';
+  getListFromNamnd(PermanentTitlesId, '', PermanentTitlesRange);
 
   var fsnId = '1I9_ngSMWz-wBTXmaavlTGIVsugFjzMiF0TqRDidyUfY';
   getListFromNamnd(fsnId, 'fsn', defaultRange);
 
-  // var fcomId = '1042kWvX-JBkBDKjo0LPWVWmleoW_IjBRrMZS6MIHsDE';
-  // getListFromNamnd(fcomId, 'fcom', defaultRange);
-  //
-  // var frumId = '1Rrdmob6-96OECcy3YSJtl9cd-jx8eCfcKqVf0oPWc4w';
-  // getListFromNamnd(frumId, 'frum', defaultRange);
-  //
-  // var mottagningenId = '13-81WGYZ1GmfZjqLsf6aLSjEhr3joFseqZjL7c9bgWU';
-  // getListFromNamnd(mottagningenId, 'mottagningen', defaultRange);
-  //
-  // var fnId = '194ctESEJRfE5uYAcS_fVelr3oUdzSdOT9NDvsfkmF-E';
-  // getListFromNamnd(fnId, 'fn', defaultRange);
-  //
-  // var fkmId = '11NsStSYkgj4Xb8joQNRbDWaOa6uS-Lng4KwpyoaUs_g';
-  // getListFromNamnd(fkmId, 'fkm', defaultRange);
+  var fcomId = '1042kWvX-JBkBDKjo0LPWVWmleoW_IjBRrMZS6MIHsDE';
+  getListFromNamnd(fcomId, 'fcom', defaultRange);
+
+  var frumId = '1Rrdmob6-96OECcy3YSJtl9cd-jx8eCfcKqVf0oPWc4w';
+  getListFromNamnd(frumId, 'frum', defaultRange);
+
+  var mottagningenId = '13-81WGYZ1GmfZjqLsf6aLSjEhr3joFseqZjL7c9bgWU';
+  getListFromNamnd(mottagningenId, 'mottagningen', defaultRange);
+
+  var fnId = '194ctESEJRfE5uYAcS_fVelr3oUdzSdOT9NDvsfkmF-E';
+  getListFromNamnd(fnId, 'fn', defaultRange);
+
+  var fkmId = '11NsStSYkgj4Xb8joQNRbDWaOa6uS-Lng4KwpyoaUs_g';
+  getListFromNamnd(fkmId, 'fkm', defaultRange);
 
   // Nu är alla medlemmar lagda på samma ställe, då är det fritt fram att hämta och synka
   // var listOfUsers = Sheets.Spreadsheets.Values.get(rootSheet, 'Alla!A2:B').values
@@ -79,14 +79,14 @@ function getListFromNamnd(sheetId, namnd, rangeid) {
       for (var j = 0; j < members.length; j++) {
         if (listOfIds[i] == members[j][3]) {
 
-          toWriteList.append([getEmail(members[j][1], namnd, true), getEmail(listOfIds[i], namnd, true)])
+          toWriteList.push([getEmail(members[j][1], namnd, true), getEmail(listOfIds[i], namnd, true)])
           // writeToSheet(getEmail(members[j][1], namnd, true), getEmail(listOfIds[i], namnd, true));
 
         }
       }
-      writeAllToSheet(toWriteList)
     }
   }
+  writeAllToSheet(toWriteList)
 }
 
 
@@ -358,7 +358,7 @@ function writeToSheet(medlemsid, gruppid, gruppNamn) {
   });
 }
 
-function writeAllToSheet(listToWrite, gruppNamn) {
+function writeAllToSheet(listToWrite) {
 
   var valueRange = Sheets.newRowData();
   valueRange.values = listToWrite;
