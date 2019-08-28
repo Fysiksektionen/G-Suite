@@ -37,10 +37,10 @@ function synkarGrupper() {
 
   var fkmId = '11NsStSYkgj4Xb8joQNRbDWaOa6uS-Lng4KwpyoaUs_g';
   getListFromNamnd(fkmId, 'fkm', defaultRange);
-  
+
   var fysikalenId = '1Sxd25EJXUZTZg6jBvLdrzYioO4YICUub0kojjNdszpg';
   getListFromNamnd(fysikalenId, 'fysikalen', defaultRange)
-  
+
   var aktivitetId = '1_7yTr0KUZxrZBPAcM7JyehEAXWukkqyHlSB00OFN9w0';
   getListFromNamnd(aktivitetId, 'aktivitet', defaultRange)
 
@@ -231,7 +231,11 @@ function CreateOrUpdateGroup(name, id, namnd) {
 // då betyder avsaknad av id:t att det är en användare som inte existerar än
 function getEmail(id, namnd, exists) {
   //Logger.log('id: ' + id + ', nämnd: ' + namnd)
+
   if(id) {
+    if id.includes("@") {
+      return id
+    }
    id = id.replace(/([\s])+/g, '.'); // Ta bort tomma mellanrum vid start och slut och konvertera till gemener
    id = id.replace(/[.][\-]/g, '-').replace(/[\-][.]/g, '-'); // Ersätt alla tomma mellanrum med en punkt (.)
    id = id.replace(/[^0-9a-z.\-_]/gi, ''); // Ta bort om det inte är engelsk bokstav eller nummer
