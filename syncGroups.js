@@ -37,6 +37,12 @@ function synkarGrupper() {
 
   var fkmId = '11NsStSYkgj4Xb8joQNRbDWaOa6uS-Lng4KwpyoaUs_g';
   getListFromNamnd(fkmId, 'fkm', defaultRange);
+  
+  var fysikalenId = '1Sxd25EJXUZTZg6jBvLdrzYioO4YICUub0kojjNdszpg';
+  getListFromNamnd(fysikalenId, 'fysikalen', defaultRange)
+  
+  var aktivitetId = '1_7yTr0KUZxrZBPAcM7JyehEAXWukkqyHlSB00OFN9w0';
+  getListFromNamnd(aktivitetId, 'aktivitet', defaultRange)
 
   // Nu är alla medlemmar lagda på samma ställe, då är det fritt fram att hämta och synka
   var listOfUsers = Sheets.Spreadsheets.Values.get(rootSheet, 'Alla!A2:B').values

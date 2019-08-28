@@ -12,7 +12,7 @@ Detta uppnås genom ett system som består av
 - Ett Google kalkylark som administrerar medlemmar och centrala accesser (styret)
 - Ett kalkylark per nämnd där alla poster och nändmedlemmar kan sättas, alla dessa samlade i en Team Drive
 - Team Drives där alla våra filer ligger, ordnade efter accessbehov
-- Ett SSO-system för inloggning (work in progress)
+- Ett SSO-system för inloggning
 
 Första uppsättningen kod är skriven av Teo Elmfeldt, FUL 2019. Inpirerad av  https://github.com/scouternasetjanster/Google-Scoutnet-synk
 
