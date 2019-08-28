@@ -230,11 +230,11 @@ function CreateOrUpdateGroup(name, id, namnd) {
 // exists är true om vi förväntar oss att en grupp som heter så redan finns.
 // då betyder avsaknad av id:t att det är en användare som inte existerar än
 function getEmail(id, namnd, exists) {
-  //Logger.log('id: ' + id + ', nämnd: ' + namnd)
+  // Logger.log('id: ' + id + ', nämnd: ' + namnd)
 
   if(id) {
-    if id.includes("@") {
-      return id
+    if (id.indexOf("@") > -1) {
+      return id;
     }
    id = id.replace(/([\s])+/g, '.'); // Ta bort tomma mellanrum vid start och slut och konvertera till gemener
    id = id.replace(/[.][\-]/g, '-').replace(/[\-][.]/g, '-'); // Ersätt alla tomma mellanrum med en punkt (.)
