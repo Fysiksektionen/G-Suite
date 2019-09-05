@@ -62,15 +62,18 @@ function getListFromNamnd(sheetId, namnd, rangeid) {
       //Logger.log(members[row][3])
 
 
-      // Om gruppens existens inte är noterad än
-      if (!contains(listOfIds, members[row][3])) {
+      // Vi tar bort rader där innehållet är tomt
+      if (members[row][3]) {
+        // Om gruppens existens inte är noterad än
+        if (!contains(listOfIds, members[row][3])) {
 
-        listOfIds.push(members[row][3]);
+          listOfIds.push(members[row][3]);
 
-        listOfTitles.push(members[row][2]);
+          listOfTitles.push(members[row][2]);
 
-        // skapar alla grupper som saknas, uppdaterar övriga
-        CreateOrUpdateGroup(members[row][2], members[row][3], namnd)
+          // skapar alla grupper som saknas, uppdaterar övriga
+          CreateOrUpdateGroup(members[row][2], members[row][3], namnd)
+        }
       }
     }
 
@@ -80,16 +83,17 @@ function getListFromNamnd(sheetId, namnd, rangeid) {
     for (var i = 0; i < listOfIds.length; i ++) {
       //Logger.log(listOfIds[i])
       // undersöker respektive grupp, kollar mot vilka som ska med
-      var listOfEmails = memberEmails(getEmail(listOfIds[i], namnd, true));
+      if (listOfIds[i]) {
+        var listOfEmails = memberEmails(getEmail(listOfIds[i], namnd, true));
 
-      for (var j = 0; j < members.length; j++) {
-        if (listOfIds[i] == members[j][3]) {
+        for (var j = 0; j < members.length; j++) {
+          if (listOfIds[i] == members[j][3]) {
 
-          toWriteList.push([getEmail(members[j][1], namnd, true), getEmail(listOfIds[i], namnd, true)])
-
-
+            toWriteList.push([getEmail(members[j][1], namnd, true), getEmail(listOfIds[i], namnd, true)])
+          }
         }
       }
+      // else Logger.log(listOfIds[i])
     }
   }
   writeAllToSheet(toWriteList)
@@ -179,7 +183,7 @@ function memberEmails(groupemail) {
   //Logger.log(groupemail);
   var members = AdminDirectory.Members.list(groupemail).members;
   if (!members) {
-    Logger.log(groupemail + ' är tom')
+    //Logger.log(groupemail + ' är tom')
   }
   else {
     var listOfEmails = [];
@@ -239,38 +243,38 @@ function getEmail(id, namnd, exists) {
    id = id.replace(/([\s])+/g, '.'); // Ta bort tomma mellanrum vid start och slut och konvertera till gemener
    id = id.replace(/[.][\-]/g, '-').replace(/[\-][.]/g, '-'); // Ersätt alla tomma mellanrum med en punkt (.)
    id = id.replace(/[^0-9a-z.\-_]/gi, ''); // Ta bort om det inte är engelsk bokstav eller nummer
-  }
-  try {
-    // Kolla om det är en användare
-    AdminDirectory.Users.get(id + '@fysiksektionen.se')
-    return id + '@fysiksektionen.se';
-  }
-  catch (e) {
-    // om de inte är existerande användare kollar vi om gruppen existerar
-    if (exists) {
-      // om vi nu inte är intresserade av att hitta på nya grupper
-      try {
-        AdminDirectory.Groups.get(id + '@fysiksektionen.se')
-      }
-      catch (e) {
-        // gruppen finns inte, då måste det vara en saknad användare
-        missingUser(id + '@fysiksektionen.se');
-        return id + '@fysiksektionen.se';
-      }
-    }
-    // antingen så förväntar vi oss inte att gruppen ska finnas
-    // eller så finns den redan
-    if (id && namnd) {
-        return id + '.' + namnd + '@fysiksektionen.se'
-    }
-    //Om det inte finns någon nämndbeteckning så hanterar vi styret
-    else if (namnd == '') {
-      return id + '@fysiksektionen.se'
-    }
-    //Om det är tomt kan vi anta att det bara är en nämndadress
-    else {
-      return namnd + '@fysiksektionen.se'
-    }
+   try {
+     // Kolla om det är en användare
+     AdminDirectory.Users.get(id + '@fysiksektionen.se')
+     return id + '@fysiksektionen.se';
+   }
+   catch (e) {
+     // om de inte är existerande användare kollar vi om gruppen existerar
+     if (exists) {
+       // om vi nu inte är intresserade av att hitta på nya grupper
+       try {
+         AdminDirectory.Groups.get(id + '@fysiksektionen.se')
+       }
+       catch (e) {
+         // gruppen finns inte, då måste det vara en saknad användare
+         missingUser(id + '@fysiksektionen.se');
+         return id + '@fysiksektionen.se';
+       }
+     }
+     // antingen så förväntar vi oss inte att gruppen ska finnas
+     // eller så finns den redan
+     if (id && namnd) {
+         return id + '.' + namnd + '@fysiksektionen.se'
+     }
+     //Om det inte finns någon nämndbeteckning så hanterar vi styret
+     else if (namnd == '') {
+       return id + '@fysiksektionen.se'
+     }
+     //Om det är tomt kan vi anta att det bara är en nämndadress
+     else {
+       return namnd + '@fysiksektionen.se'
+     }
+   }
   }
 }
 
