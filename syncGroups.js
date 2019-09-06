@@ -63,7 +63,7 @@ function getListFromNamnd(sheetId, namnd, rangeid) {
 
 
       // Vi tar bort rader där innehållet är tomt
-      if (members[row][3]) {
+      if (members[row][1] && members[row][3]) {
         // Om gruppens existens inte är noterad än
         if (!contains(listOfIds, members[row][3])) {
 
