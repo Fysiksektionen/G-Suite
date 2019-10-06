@@ -8,45 +8,45 @@
 //FIXME: Tomma rader, ta bort undefined
 function synkarGrupper() {
   var rootSheet = '1EsPbU7hCHUxtziBXrYAoih1lcfYZK9AT4JUpVyMCAJU'
-  var defaultRange = 'A2:D'
+  var defaultRange = 'A2:E'
   Sheets.Spreadsheets.Values.clear({}, rootSheet, 'Alla!A2:C')
   // Lägg till respektive nämnd, och sheet-id till dess medlemslista
 
-  var styretId = rootSheet;
-  var StyretRange = 'Styret!A2:D';
-  getListFromNamnd(styretId, 'styret', StyretRange);
-
-  var PermanentTitlesId = rootSheet;
-  var PermanentTitlesRange = 'Grupper!A2:D';
-  getListFromNamnd(PermanentTitlesId, '', PermanentTitlesRange);
+  // var styretId = rootSheet;
+  // var StyretRange = 'Styret!A2:D';
+  // getListFromNamnd(styretId, 'styret', StyretRange);
+  //
+  // var PermanentTitlesId = rootSheet;
+  // var PermanentTitlesRange = 'Grupper!A2:D';
+  // getListFromNamnd(PermanentTitlesId, '', PermanentTitlesRange);
 
   var fsnId = '1I9_ngSMWz-wBTXmaavlTGIVsugFjzMiF0TqRDidyUfY';
   getListFromNamnd(fsnId, 'fsn', defaultRange);
 
-  var fcomId = '1042kWvX-JBkBDKjo0LPWVWmleoW_IjBRrMZS6MIHsDE';
-  getListFromNamnd(fcomId, 'fcom', defaultRange);
+  // var fcomId = '1042kWvX-JBkBDKjo0LPWVWmleoW_IjBRrMZS6MIHsDE';
+  // getListFromNamnd(fcomId, 'fcom', defaultRange);
+  //
+  // var frumId = '1Rrdmob6-96OECcy3YSJtl9cd-jx8eCfcKqVf0oPWc4w';
+  // getListFromNamnd(frumId, 'frum', defaultRange);
+  //
+  // var mottagningenId = '13-81WGYZ1GmfZjqLsf6aLSjEhr3joFseqZjL7c9bgWU';
+  // getListFromNamnd(mottagningenId, 'mottagningen', defaultRange);
+  //
+  // var fnId = '194ctESEJRfE5uYAcS_fVelr3oUdzSdOT9NDvsfkmF-E';
+  // getListFromNamnd(fnId, 'fn', defaultRange);
+  //
+  // var fkmId = '11NsStSYkgj4Xb8joQNRbDWaOa6uS-Lng4KwpyoaUs_g';
+  // getListFromNamnd(fkmId, 'fkm', defaultRange);
+  //
+  // var fysikalenId = '1Sxd25EJXUZTZg6jBvLdrzYioO4YICUub0kojjNdszpg';
+  // getListFromNamnd(fysikalenId, 'fysikalen', defaultRange)
+  //
+  // var aktivitetId = '1_7yTr0KUZxrZBPAcM7JyehEAXWukkqyHlSB00OFN9w0';
+  // getListFromNamnd(aktivitetId, 'aktivitet', defaultRange)
+  //
+  // var jamnId = '19yB9udiTwU9gAZhRSnD4DXpHovvovubH6L4mIDiMIXw';
+  // getListFromNamnd(jamnId, 'jamlikhet', defaultRange)
 
-  var frumId = '1Rrdmob6-96OECcy3YSJtl9cd-jx8eCfcKqVf0oPWc4w';
-  getListFromNamnd(frumId, 'frum', defaultRange);
-
-  var mottagningenId = '13-81WGYZ1GmfZjqLsf6aLSjEhr3joFseqZjL7c9bgWU';
-  getListFromNamnd(mottagningenId, 'mottagningen', defaultRange);
-
-  var fnId = '194ctESEJRfE5uYAcS_fVelr3oUdzSdOT9NDvsfkmF-E';
-  getListFromNamnd(fnId, 'fn', defaultRange);
-
-  var fkmId = '11NsStSYkgj4Xb8joQNRbDWaOa6uS-Lng4KwpyoaUs_g';
-  getListFromNamnd(fkmId, 'fkm', defaultRange);
-
-  var fysikalenId = '1Sxd25EJXUZTZg6jBvLdrzYioO4YICUub0kojjNdszpg';
-  getListFromNamnd(fysikalenId, 'fysikalen', defaultRange)
-
-  var aktivitetId = '1_7yTr0KUZxrZBPAcM7JyehEAXWukkqyHlSB00OFN9w0';
-  getListFromNamnd(aktivitetId, 'aktivitet', defaultRange)
-  
-  var jamnId = '19yB9udiTwU9gAZhRSnD4DXpHovvovubH6L4mIDiMIXw';
-  getListFromNamnd(jamnId, 'jamlikhet', defaultRange)
-  
   // Nu är alla medlemmar lagda på samma ställe, då är det fritt fram att hämta och synka
   var listOfUsers = Sheets.Spreadsheets.Values.get(rootSheet, 'Alla!A2:B').values
   addAndRemoveUsers(listOfUsers)
@@ -66,16 +66,16 @@ function getListFromNamnd(sheetId, namnd, rangeid) {
 
 
       // Vi tar bort rader där innehållet är tomt
-      if (members[row][1] && members[row][3]) {
+      if (members[row][2] && members[row][4]) {
         // Om gruppens existens inte är noterad än
-        if (!contains(listOfIds, members[row][3])) {
+        if (!contains(listOfIds, members[row][4])) {
 
-          listOfIds.push(members[row][3]);
+          listOfIds.push(members[row][4]);
 
-          listOfTitles.push(members[row][2]);
+          listOfTitles.push(members[row][3]);
 
           // skapar alla grupper som saknas, uppdaterar övriga
-          CreateOrUpdateGroup(members[row][2], members[row][3], namnd)
+          CreateOrUpdateGroup(members[row][3], members[row][4], namnd)
         }
       }
     }
@@ -90,9 +90,9 @@ function getListFromNamnd(sheetId, namnd, rangeid) {
         var listOfEmails = memberEmails(getEmail(listOfIds[i], namnd, true));
 
         for (var j = 0; j < members.length; j++) {
-          if (listOfIds[i] == members[j][3]) {
+          if (listOfIds[i] == members[j][4]) {
 
-            toWriteList.push([getEmail(members[j][1], namnd, true), getEmail(listOfIds[i], namnd, true)])
+            toWriteList.push([getEmail(members[j][2], namnd, true), getEmail(listOfIds[i], namnd, true)])
           }
         }
       }
@@ -111,7 +111,7 @@ function addAndRemoveUsers(listOfUsers) {
     var listOfGroupIds = []
     // leta rätt på alla grupper som finns
     for (var row = 0; row < listOfUsers.length; row++) {
-      //Logger.log(members[row][3])
+      //Logger.log(members[row][4])
       if (!contains(listOfGroupIds, listOfUsers[row][1])) { // Om gruppens existens inte är noterad än
         listOfGroupIds.push(listOfUsers[row][1]);
 
@@ -260,7 +260,7 @@ function getEmail(id, namnd, exists) {
        }
        catch (e) {
          // gruppen finns inte, då måste det vara en saknad användare
-         missingUser(id + '@fysiksektionen.se');
+         missingUser(id);
          return id + '@fysiksektionen.se';
        }
      }
@@ -321,7 +321,7 @@ function addToGroup(groupEmail, memberemail) {
       catch (e) {
         // slutligen måste det vara en medlem som inte är skapad än
         Logger.log(e + ' ' + memberemail + groupEmail);
-        missingUser(memberemail);
+        missingUser(memberemail.split('@')[0]);
       }
     }
   }
@@ -335,6 +335,12 @@ function removeFromGroup(memberEmail, groupEmail) {
 
 //TODO: se till så att användaren skapas. Automatiskt eller manuellt?
 function missingUser(memberId) {
+  var member = {
+    first_name: memberObject.first_name[i],
+    last_name: memberObject.last_name[i],
+    id: memberId,
+    email: memberId + '@fysiksektionen.se',
+    };
   Logger.log('Användaren ' + memberId + ' saknas')
   /*
   var email = Session.getActiveUser().getEmail();
