@@ -43,7 +43,10 @@ function synkarGrupper() {
 
   var aktivitetId = '1_7yTr0KUZxrZBPAcM7JyehEAXWukkqyHlSB00OFN9w0';
   getListFromNamnd(aktivitetId, 'aktivitet', defaultRange)
-
+  
+  var jamnId = '19yB9udiTwU9gAZhRSnD4DXpHovvovubH6L4mIDiMIXw';
+  getListFromNamnd(jamnId, 'jamlikhet', defaultRange)
+  
   // Nu är alla medlemmar lagda på samma ställe, då är det fritt fram att hämta och synka
   var listOfUsers = Sheets.Spreadsheets.Values.get(rootSheet, 'Alla!A2:B').values
   addAndRemoveUsers(listOfUsers)
